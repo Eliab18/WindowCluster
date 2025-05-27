@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Reflection;
 using System.Text.Json;
 using System.Windows;
 using System.Windows.Controls;
@@ -13,12 +14,67 @@ namespace FencesApp
 {
     public partial class App : Application
     {
+        private static string GetApplicationDirectory()
+        {
+            // This method remains static. Logging of its direct inputs and outputs
+            // will be handled by the callers using the instance-based LogMessage.
+            return Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+        }
+
+        // LogFilePath will have its components logged in OnStartup.
+        // ConfigPath is now relative.
+        private static readonly string LogFilePath = Path.Combine(GetApplicationDirectory(), "app_startup.log");
+        private static readonly string ConfigPath = Path.Combine("Resources", "config.json");
+
+        private void LogMessage(string message)
+        {
+            try
+            {
+                File.AppendAllText(LogFilePath, $"[{DateTime.Now}] {message}{Environment.NewLine}");
+            }
+            catch (Exception ex)
+            {
+                // Fallback or error handling for logging failure
+                System.Diagnostics.Debug.WriteLine($"Failed to write to log: {ex.Message}");
+            }
+        }
 
         private TaskbarIcon _taskbarIcon;
 
         protected override void OnStartup(StartupEventArgs e)
         {
+            // --- Set and Log Current Working Directory ---
+            LogMessage($"OnStartup: Initial Current Working Directory: {Directory.GetCurrentDirectory()}");
+            string appExecutablePath = GetApplicationDirectory();
+            LogMessage($"OnStartup: Application Executable Path from GetApplicationDirectory(): {appExecutablePath}");
+            try
+            {
+                Directory.SetCurrentDirectory(appExecutablePath);
+                LogMessage($"OnStartup: Current Working Directory set to: {Directory.GetCurrentDirectory()}");
+            }
+            catch (Exception ex)
+            {
+                LogMessage($"OnStartup: Error setting current working directory to '{appExecutablePath}': {ex.Message}");
+            }
+            // --- End Set and Log Current Working Directory ---
 
+            // --- Begin Logging for Static Path Initialization ---
+            string rawLocation = Assembly.GetExecutingAssembly().Location;
+            LogMessage($"OnStartup: Raw Assembly.GetExecutingAssembly().Location for static paths: {rawLocation}");
+
+            string appDirForStaticFields = GetApplicationDirectory(); // First call relevant to static fields
+            LogMessage($"OnStartup: GetApplicationDirectory() call for static paths returned: {appDirForStaticFields}");
+
+            // Log LogFilePath components
+            string logFileRelativePart = "app_startup.log";
+            LogMessage($"OnStartup: LogFilePath Component 1 (appDir): {appDirForStaticFields}");
+            LogMessage($"OnStartup: LogFilePath Component 2 (filename): \"{logFileRelativePart}\"");
+            // LogFilePath is already constructed by this point, log its final value.
+            LogMessage($"OnStartup: Final static LogFilePath: {LogFilePath}");
+
+            // Log ConfigPath (which is now relative)
+            LogMessage($"OnStartup: Static relative ConfigPath: {ConfigPath}");
+            // --- End Logging for Static Path Initialization ---
 
             base.OnStartup(e);
 
@@ -130,12 +186,12 @@ namespace FencesApp
 
         }
         public AppConfig Config { get; private set; }
-        private const string ConfigPath = "Resources/config.json";
-
-
+        // ConfigPath is now defined above as a relative path.
 
         private AppConfig LoadConfig()
         {
+            // ConfigPath is now a relative static path.
+            LogMessage($"LoadConfig() attempting to load from relative ConfigPath: {ConfigPath}");
             if (File.Exists(ConfigPath))
             {
                 try
@@ -143,8 +199,9 @@ namespace FencesApp
                     string json = File.ReadAllText(ConfigPath);
                     return JsonSerializer.Deserialize<AppConfig>(json);
                 }
-                catch
+                catch (Exception ex)
                 {
+                    LogMessage($"Error loading relative config file {ConfigPath}: {ex.Message}. Creating default config.");
                     // Si hay error, se usa configuración por defecto
                     var defaultConfig = new AppConfig();
                     SaveConfig(defaultConfig);
@@ -153,6 +210,7 @@ namespace FencesApp
             }
             else
             {
+                LogMessage($"Relative config file {ConfigPath} not found. Creating default config.");
                 var defaultConfig = new AppConfig();
                 SaveConfig(defaultConfig);
                 return defaultConfig;
@@ -161,9 +219,13 @@ namespace FencesApp
 
         public void SaveConfig(AppConfig config)
         {
-            // Asegurarte de que el directorio del archivo exista
-            string directory = Path.GetDirectoryName(ConfigPath);
-            if (!Directory.Exists(directory))
+            // ConfigPath is now a relative static path.
+            LogMessage($"SaveConfig() attempting to save to relative ConfigPath: {ConfigPath}");
+
+            // Asegurarte de que el directorio del archivo exista (relative to CWD)
+            string directory = Path.GetDirectoryName(ConfigPath); // Should be "Resources"
+            LogMessage($"SaveConfig() ensuring relative directory exists: \"{directory}\"");
+            if (!string.IsNullOrEmpty(directory) && !Directory.Exists(directory))
             {
                 Directory.CreateDirectory(directory); // Crear el directorio si no existe
             }
@@ -171,7 +233,8 @@ namespace FencesApp
             // Serializar el objeto config a formato JSON
             string json = JsonSerializer.Serialize(config, new JsonSerializerOptions { WriteIndented = true });
 
-            // Guardar el archivo JSON en la ruta especificada
+            LogMessage($"Saving configuration to relative path: {ConfigPath}");
+            // Guardar el archivo JSON en la ruta especificada (relative to CWD)
             File.WriteAllText(ConfigPath, json);
         }
 
@@ -180,12 +243,21 @@ namespace FencesApp
         {
             // Validación: si el idioma no es "en" o "es", se asigna "en" por defecto.
             if (language != "en" && language != "es")
+            {
+                LogMessage($"LoadLanguageDictionary() invalid language '{language}' provided, defaulting to 'en'.");
                 language = "en";
+            }
 
+            // --- LoadLanguageDictionary using Relative URI ---
             string dictionaryPath = $"Resources/StringResources.{language}.xaml";
+            LogMessage($"LoadLanguageDictionary({language}): Attempting to load with relative dictionaryPath: {dictionaryPath}");
+
             try
             {
-                var newDictionary = new ResourceDictionary() { Source = new Uri(dictionaryPath, UriKind.Relative) };
+                Uri resourceUri = new Uri(dictionaryPath, UriKind.Relative);
+                // For relative URIs, OriginalString is often more informative than AbsoluteUri
+                LogMessage($"LoadLanguageDictionary({language}): Constructed Uri.OriginalString: {resourceUri.OriginalString}");
+                var newDictionary = new ResourceDictionary() { Source = resourceUri };
 
                 // Eliminar cualquier diccionario que contenga "StringResources." en su Source
                 for (int i = 0; i < Resources.MergedDictionaries.Count; i++)
@@ -202,6 +274,7 @@ namespace FencesApp
             }
             catch (Exception ex)
             {
+                LogMessage($"Error loading language dictionary with relative path {dictionaryPath}: {ex.Message}");
                 MessageBox.Show("Error al cargar el idioma: " + ex.Message);
             }
         }
