@@ -1,0 +1,244 @@
+﻿<UserControl x:Class="FencesApp.Pages.AboutPage"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             mc:Ignorable="d">
+    <UserControl.Resources>
+        <!-- Estilo para el botón moderno -->
+        <Style x:Key="ModernButtonStyle" TargetType="Button">
+            <Setter Property="Background" Value="#1ABC9C"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="FontSize" Value="16"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Padding" Value="20,10"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="HorizontalAlignment" Value="Left"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                CornerRadius="6"
+                                Padding="{TemplateBinding Padding}">
+                            <ContentPresenter HorizontalAlignment="Center" 
+                                              VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="#16A085"/>
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter Property="Background" Value="#0E8C73"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!-- Estilo para el subtítulo -->
+        <Style x:Key="SubtitleTextBlockStyle" TargetType="TextBlock">
+            <Setter Property="FontSize" Value="16"/>
+            <Setter Property="Foreground" Value="#7F8C8D"/>
+            <Setter Property="Margin" Value="0,0,0,20"/>
+            <Setter Property="HorizontalAlignment" Value="Left"/>
+        </Style>
+
+        <!-- Estilo para el título principal -->
+        <Style x:Key="TitleTextBlockStyle" TargetType="TextBlock">
+            <Setter Property="FontSize" Value="24"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="Foreground" Value="#2C3E50"/>
+            <Setter Property="Margin" Value="0,0,0,10"/>
+            <Setter Property="HorizontalAlignment" Value="Left"/>
+        </Style>
+
+        <!-- Estilo para la información de versión -->
+        <Style x:Key="VersionInfoStyle" TargetType="Border">
+            <Setter Property="Background" Value="#F5F5F5"/>
+            <Setter Property="BorderBrush" Value="#DADADA"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="CornerRadius" Value="6"/>
+            <Setter Property="Padding" Value="15,10"/>
+            <Setter Property="Margin" Value="0,0,0,25"/>
+            <Setter Property="HorizontalAlignment" Value="Left"/>
+        </Style>
+
+        <!-- Estilos para el Modal -->
+        <Style x:Key="ModalOverlayStyle" TargetType="Grid">
+            <Setter Property="Background" Value="#80000000"/>
+            <Setter Property="Visibility" Value="Collapsed"/>
+            <Setter Property="Opacity" Value="0"/>
+        </Style>
+
+        <Style x:Key="ModalContentStyle" TargetType="Border">
+            <Setter Property="Background" Value="White"/>
+            <Setter Property="BorderBrush" Value="#DADADA"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="CornerRadius" Value="8"/>
+            <Setter Property="Padding" Value="25"/>
+            <Setter Property="Width" Value="300"/>
+            <Setter Property="MaxWidth" Value="500"/>
+            <Setter Property="HorizontalAlignment" Value="Center"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="Effect">
+                <Setter.Value>
+                    <DropShadowEffect ShadowDepth="2" BlurRadius="15" Opacity="0.2" Color="Black"/>
+                </Setter.Value>
+            </Setter>
+            <Setter Property="RenderTransform">
+                <Setter.Value>
+                    <ScaleTransform ScaleX="0.9" ScaleY="0.9"/>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!-- Animaciones -->
+        <Storyboard x:Key="ShowModalAnimation">
+            <DoubleAnimation Storyboard.TargetProperty="Opacity" From="0" To="1" Duration="0:0:0.3"/>
+            <DoubleAnimation Storyboard.TargetName="ModalContent" 
+                            Storyboard.TargetProperty="(UIElement.RenderTransform).(ScaleTransform.ScaleX)" 
+                            From="0.9" To="1" Duration="0:0:0.3">
+                <DoubleAnimation.EasingFunction>
+                    <BackEase EasingMode="EaseOut" Amplitude="0.3"/>
+                </DoubleAnimation.EasingFunction>
+            </DoubleAnimation>
+            <DoubleAnimation Storyboard.TargetName="ModalContent" 
+                            Storyboard.TargetProperty="(UIElement.RenderTransform).(ScaleTransform.ScaleY)" 
+                            From="0.9" To="1" Duration="0:0:0.3">
+                <DoubleAnimation.EasingFunction>
+                    <BackEase EasingMode="EaseOut" Amplitude="0.3"/>
+                </DoubleAnimation.EasingFunction>
+            </DoubleAnimation>
+        </Storyboard>
+
+        <Storyboard x:Key="HideModalAnimation">
+            <DoubleAnimation Storyboard.TargetProperty="Opacity" From="1" To="0" Duration="0:0:0.2"/>
+            <DoubleAnimation Storyboard.TargetName="ModalContent" 
+                            Storyboard.TargetProperty="(UIElement.RenderTransform).(ScaleTransform.ScaleX)" 
+                            From="1" To="0.9" Duration="0:0:0.2">
+                <DoubleAnimation.EasingFunction>
+                    <QuadraticEase EasingMode="EaseIn"/>
+                </DoubleAnimation.EasingFunction>
+            </DoubleAnimation>
+            <DoubleAnimation Storyboard.TargetName="ModalContent" 
+                            Storyboard.TargetProperty="(UIElement.RenderTransform).(ScaleTransform.ScaleY)" 
+                            From="1" To="0.9" Duration="0:0:0.2">
+                <DoubleAnimation.EasingFunction>
+                    <QuadraticEase EasingMode="EaseIn"/>
+                </DoubleAnimation.EasingFunction>
+            </DoubleAnimation>
+        </Storyboard>
+    </UserControl.Resources>
+
+    <Grid Background="#ECF0F1">
+        <Border Background="White" Margin="10" Padding="20">
+            <StackPanel HorizontalAlignment="Left">
+                <!-- Título -->
+                <TextBlock Text="{DynamicResource AboutTitle}" Style="{StaticResource TitleTextBlockStyle}"/>
+
+                <!-- Información del desarrollador -->
+                <TextBlock Text="{DynamicResource AboutDesc}" Style="{StaticResource SubtitleTextBlockStyle}"/>
+
+                <!-- Información de versión -->
+                <Border Style="{StaticResource VersionInfoStyle}" Width="250">
+                    <StackPanel>
+                        <TextBlock Text="{DynamicResource AboutTitleVersion}" FontSize="14" Foreground="#7F8C8D" Margin="0,0,0,5"/>
+                        <TextBlock Text="{DynamicResource AboutCurrentVersion}" FontSize="18" Foreground="#2C3E50" FontWeight="SemiBold"/>
+                    </StackPanel>
+                </Border>
+
+                <!-- Botón para buscar actualizaciones -->
+                <Button x:Name="UpdateButton" 
+                        Content="{DynamicResource AboutSearchActButton}" 
+                        Style="{StaticResource ModernButtonStyle}" 
+                        Click="UpdateButton_Click"/>
+
+                <!-- Indicador de progreso -->
+                <Grid x:Name="ProgressGrid" Visibility="Collapsed" Margin="0,20,0,0" HorizontalAlignment="Left">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+
+                    <!-- Indicador circular -->
+                    <Grid Width="40" Height="40" HorizontalAlignment="Left">
+                        <!-- Círculo de fondo -->
+                        <Ellipse Stroke="#E0E0E0" StrokeThickness="3.5"/>
+
+                        <!-- Círculo animado -->
+                        <Ellipse x:Name="ProgressIndicator" 
+                                 Stroke="#1ABC9C" 
+                                 StrokeThickness="3.5" 
+                                 StrokeDashArray="1,2">
+                            <Ellipse.RenderTransform>
+                                <RotateTransform x:Name="RotateTransform" 
+                                                Angle="0" 
+                                                CenterX="20" 
+                                                CenterY="20"/>
+                            </Ellipse.RenderTransform>
+                        </Ellipse>
+                    </Grid>
+
+                    <!-- Texto de estado -->
+                    <TextBlock x:Name="UpdateStatusText" 
+                               Text="Buscando actualizaciones..." 
+                               Grid.Row="1"
+                               Margin="0,10,0,0" 
+                               FontSize="14" 
+                               Foreground="#7F8C8D"/>
+                </Grid>
+            </StackPanel>
+        </Border>
+
+        <!-- Modal de actualización -->
+        <Grid x:Name="ModalOverlay" Style="{StaticResource ModalOverlayStyle}" Panel.ZIndex="100">
+            <Border x:Name="ModalContent" Style="{StaticResource ModalContentStyle}">
+                <StackPanel HorizontalAlignment="Center">
+                    <!-- Indicador de carga -->
+                    <Grid x:Name="ModalLoadingGrid" Margin="0,0,0,15">
+                        <Grid Width="60" Height="60" HorizontalAlignment="Center" Margin="0,0,0,15">
+                            <!-- Círculo de fondo -->
+                            <Ellipse Stroke="#E0E0E0" StrokeThickness="4"/>
+                            <!-- Círculo animado -->
+                            <Ellipse x:Name="ModalProgressIndicator" 
+                                     Stroke="#1ABC9C" 
+                                     StrokeThickness="4" 
+                                     StrokeDashArray="1,3">
+                                <Ellipse.RenderTransform>
+                                    <RotateTransform x:Name="ModalRotateTransform" 
+                                                    Angle="0" 
+                                                    CenterX="30" 
+                                                    CenterY="30"/>
+                                </Ellipse.RenderTransform>
+                            </Ellipse>
+                        </Grid>
+
+                        <!-- Texto del estado de actualización -->
+                        <TextBlock x:Name="ModalStatusText" 
+                                   Text="Buscando actualizaciones..." 
+                                   HorizontalAlignment="Center"
+                                   VerticalAlignment="Bottom"
+                                   TextWrapping="Wrap"
+                                   TextAlignment="Center"
+                                   FontSize="16" 
+                                   Foreground="#2C3E50"
+                                   Margin="0,80,0,0"/>
+                    </Grid>
+
+                    <!-- Botón para cerrar (inicialmente oculto) -->
+                    <Button x:Name="CloseModalButton" 
+                            Content="{DynamicResource AboutCloseButton}" 
+                            Style="{StaticResource ModernButtonStyle}"
+                            HorizontalAlignment="Center"
+                            Visibility="Collapsed"
+                            Margin="0,10,0,0"
+                            Click="CloseModalButton_Click"/>
+                </StackPanel>
+            </Border>
+        </Grid>
+    </Grid>
+</UserControl>

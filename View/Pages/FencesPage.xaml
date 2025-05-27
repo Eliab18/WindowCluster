@@ -1,0 +1,330 @@
+﻿<Page x:Class="FencesApp.Pages.FencesPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:fa="http://schemas.fontawesome.io/icons/"
+      Title="FencesPage">
+    <Page.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/View/Styles/StylesFencesPage.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Page.Resources>
+
+
+    <!-- Layout principal -->
+    <Grid Background="#ECF0F1">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <!-- Título principal -->
+        <TextBlock Text="{DynamicResource WindowTittle}" FontSize="28" FontWeight="Bold" Foreground="#2C3E50"
+               HorizontalAlignment="Center" Margin="0,0,0,20"/>
+
+        <!-- Contenido central -->
+        <StackPanel Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Top" Width="Auto" Margin="10">
+            <!-- Botón para crear fence -->
+            <Button Content="{DynamicResource WindowCreateButton}" Click="CreateFence_Click" Width="180" Style="{StaticResource ModernButtonStyle}"/>
+
+            <!-- Selector de Fence -->
+            <ComboBox x:Name="FenceSelector" SelectionChanged="FenceSelector_SelectionChanged"
+                Style="{StaticResource ModernComboBoxStyle}" Margin="10,5" HorizontalAlignment="Stretch">
+                <ComboBox.ItemContainerStyle>
+                    <StaticResource ResourceKey="ModernComboBoxItemStyle"/>
+                </ComboBox.ItemContainerStyle>
+            </ComboBox>
+
+            <!-- Panel que contendrá todos los controles que dependen de que se seleccione un fence -->
+            <StackPanel x:Name="FenceOptionsPanel" Visibility="Collapsed">
+                <!-- PRIMER EXPANDER: Personalizar Título -->
+                <Expander  x:Name="TitleExpander"  Header="{DynamicResource WindowExpanderTitle}" Style="{StaticResource ModernExpanderStyle}" IsExpanded="False" Margin="5" Expanded="TitleExpander_Expanded">
+                    <StackPanel x:Name="FenceSettings">
+                        <!-- Sección para renombrar el fence (sin fondo, solo línea inferior y botón debajo) -->
+                        <Border Margin="5,10,5,15">
+                            <StackPanel>
+                                <TextBox x:Name="FenceNameInput" 
+                         Style="{StaticResource BorderlessTextBoxStyle}" 
+                         HorizontalAlignment="Stretch"
+                         PreviewTextInput="FenceNameInput_PreviewTextInput"/>
+                                <Button Content="{DynamicResource WindowRenameButton}" 
+                        Click="RenameFence_Click" 
+                        Width="120" 
+                        Style="{StaticResource ModernButtonStyle}" 
+                        Background="#3498DB"
+                        HorizontalAlignment="Right"
+                        Margin="0,10,5,0"/>
+                            </StackPanel>
+                        </Border>
+
+                        <!-- Color del texto - Reorganizado con Grid para mejor alineación -->
+                        <Border Style="{StaticResource SectionStyle}">
+                            <StackPanel>
+                                <TextBlock Text="{DynamicResource WindowColorTitle}" Style="{StaticResource SectionTitleStyle}"/>
+
+                                <Grid Margin="0,5">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                    </Grid.ColumnDefinitions>
+
+                                    <ComboBox x:Name="TitleColorSelector" 
+                              Style="{StaticResource ModernComboBoxStyle}" 
+                              MinWidth="150"
+                              MaxWidth="250"
+                              HorizontalAlignment="Left"               
+                              Grid.Column="0">
+                                        <ComboBox.ItemContainerStyle>
+                                            <StaticResource ResourceKey="ModernComboBoxItemStyle"/>
+                                        </ComboBox.ItemContainerStyle>
+                                        <ComboBoxItem Content="{DynamicResource WindowColorWhite}" Tag="#FFFFFFFF"/>
+                                        <ComboBoxItem Content="{DynamicResource WindowColorBlack}" Tag="#FF000000"/>
+                                        <ComboBoxItem Content="{DynamicResource WindowColorRed}" Tag="#FFFF0000"/>
+                                        <ComboBoxItem Content="{DynamicResource WindowColorGreen}" Tag="#FF00FF00"/>
+                                        <ComboBoxItem Content="{DynamicResource WindowColorBlue}" Tag="#FF0000FF"/>
+                                    </ComboBox>
+
+                                    <StackPanel Orientation="Horizontal" Grid.Column="1" Margin="10,0,0,0">
+                                        <Label Content="{DynamicResource WindowLabelHexBg}" Style="{StaticResource ModernLabelStyle}" VerticalAlignment="Center"/>
+                                        <TextBox x:Name="CustomTitleColorInput" Style="{StaticResource ModernTextBoxStyle}" Width="100" MaxLength="6"/>
+                                    </StackPanel>
+
+                                    <Button Content="{DynamicResource WindowColorTitleButton}" 
+                            Click="ApplyTitleColor_Click" 
+                            Width="100" 
+                            Style="{StaticResource ModernButtonStyle}" 
+                            Background="#E67E22"
+                            Grid.Column="2"/>
+                                </Grid>
+                            </StackPanel>
+                            
+                            
+                        </Border>
+
+                        <!-- Font family style-->
+                        <Border Style="{StaticResource SectionStyle}">
+                            <StackPanel>
+                                <TextBlock Text="{DynamicResource WindowFontFamily}" Style="{StaticResource SectionTitleStyle}"/>
+
+                                <!-- Search box with placeholder -->
+                                <Grid Margin="0,5,0,5">
+                                    <TextBox x:Name="FontSearchBox" 
+                     Style="{StaticResource ModernTextBoxStyle}"
+                     TextChanged="FontSearchBox_TextChanged"/>
+
+                                    <TextBlock IsHitTestVisible="False" 
+                       Text="{DynamicResource SearchFonts}" 
+                       Foreground="Gray" 
+                       Margin="5,0,0,0" 
+                       VerticalAlignment="Center">
+                                        <TextBlock.Style>
+                                            <Style TargetType="TextBlock">
+                                                <Setter Property="Visibility" Value="Collapsed"/>
+                                                <Style.Triggers>
+                                                    <MultiDataTrigger>
+                                                        <MultiDataTrigger.Conditions>
+                                                            <Condition Binding="{Binding Text.Length, ElementName=FontSearchBox}" Value="0"/>
+                                                            <Condition Binding="{Binding IsFocused, ElementName=FontSearchBox}" Value="False"/>
+                                                        </MultiDataTrigger.Conditions>
+                                                        <Setter Property="Visibility" Value="Visible"/>
+                                                    </MultiDataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </TextBlock.Style>
+                                    </TextBlock>
+                                </Grid>
+
+                                <ComboBox x:Name="FontFamilySelector"
+                  Style="{StaticResource ModernComboBoxStyle}"
+                  Margin="0,5"
+                  SelectionChanged="FontFamilySelector_SelectionChanged">
+                                    <ComboBox.ItemTemplate>
+                                        <DataTemplate>
+                                            <TextBlock Text="{Binding DisplayName}" 
+                               FontFamily="{Binding FontFamily}"
+                               FontWeight="{Binding Weight}"
+                               FontStyle="{Binding Style}"/>
+                                        </DataTemplate>
+                                    </ComboBox.ItemTemplate>
+                                </ComboBox>
+                            </StackPanel>
+                        </Border>
+
+                        <!-- Alineación y tamaño del título -->
+                        <Border Style="{StaticResource SectionStyle}">
+                            <StackPanel>
+                                <TextBlock Text="{DynamicResource WindowTitleAlignment}" Style="{StaticResource SectionTitleStyle}"/>
+
+                                <StackPanel Orientation="Horizontal" Margin="0,5">
+                                    <RadioButton Content="{DynamicResource WindowTitleAlignmentLeft}" 
+                                 Tag="Left" 
+                                 GroupName="TitleAlignment" 
+                                 Checked="TitleAlignment_Changed" 
+                                 Style="{StaticResource ModernRadioButtonStyle}"/>
+                                    <RadioButton Content="{DynamicResource WindowTitleAlignmentCenter}" 
+                                 Tag="Center" 
+                                 GroupName="TitleAlignment" 
+                                 Checked="TitleAlignment_Changed" 
+                                 Style="{StaticResource ModernRadioButtonStyle}"/>
+                                    <RadioButton Content="{DynamicResource WindowTitleAlignmentRight}" 
+                                 Tag="Right" 
+                                 GroupName="TitleAlignment" 
+                                 Checked="TitleAlignment_Changed" 
+                                 Style="{StaticResource ModernRadioButtonStyle}"/>
+                                </StackPanel>
+
+                                <TextBlock Text="{DynamicResource WindowTitleSize}" Style="{StaticResource SectionTitleStyle}" Margin="0,15,0,5"/>
+
+                                <StackPanel Orientation="Horizontal" Margin="0,5">
+                                    <RadioButton Content="{DynamicResource WindowTitleSizeSmall}" 
+                                 Tag="16" 
+                                 GroupName="TitleFontSize" 
+                                 Checked="TitleFontSize_Changed" 
+                                 Style="{StaticResource ModernRadioButtonStyle}"/>
+                                    <RadioButton Content="{DynamicResource WindowTitleSizeMedium}" 
+                                 Tag="20" 
+                                 GroupName="TitleFontSize" 
+                                 Checked="TitleFontSize_Changed" 
+                                 Style="{StaticResource ModernRadioButtonStyle}" 
+                                 IsChecked="True"/>
+                                    <RadioButton Content="{DynamicResource WindowTitleSizeBig}" 
+                                 Tag="28" 
+                                 GroupName="TitleFontSize" 
+                                 Checked="TitleFontSize_Changed" 
+                                 Style="{StaticResource ModernRadioButtonStyle}"/>
+                                </StackPanel>
+                            </StackPanel>
+                        </Border>
+
+                        <!-- Estilo del título: Default o Etiqueta -->
+                        <Border Style="{StaticResource SectionStyle}">
+                            <StackPanel>
+                                <TextBlock Text="{DynamicResource WindowTitleStyle}" Style="{StaticResource SectionTitleStyle}"/>
+                                <StackPanel Orientation="Horizontal" Margin="0,5,0,10">
+                                    <RadioButton Content="{DynamicResource WindowTitleStyleDefault}" 
+                Tag="default" 
+                GroupName="TitleDesign" 
+                Checked="TitleDesign_Changed" 
+                Style="{StaticResource ModernRadioButtonStyle}" 
+                IsChecked="True"/>
+                                    <RadioButton Content="{DynamicResource WindowTitleStyleTag}" 
+                Tag="etiqueta" 
+                GroupName="TitleDesign" 
+                Checked="TitleDesign_Changed" 
+                Style="{StaticResource ModernRadioButtonStyle}"/>
+                                </StackPanel>
+                                <!-- Opciones de fondo de título (visible solo cuando se selecciona "Etiqueta") -->
+                                <StackPanel x:Name="TitleBackgroundSettings" Visibility="Collapsed">
+                                    <Grid Margin="0,5">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="Auto"/>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="Auto"/>
+                                        </Grid.ColumnDefinitions>
+                                        <ComboBox x:Name="TitleBgColorSelector" 
+                    Style="{StaticResource ModernComboBoxStyle}" 
+                    MinWidth="150"
+                    MaxWidth="250"
+                    HorizontalAlignment="Left"
+                    Grid.Column="0">
+                                            <ComboBox.ItemContainerStyle>
+                                                <StaticResource ResourceKey="ModernComboBoxItemStyle"/>
+                                            </ComboBox.ItemContainerStyle>
+                                            <ComboBoxItem Content="{DynamicResource WindowTitleStyleBgDefault}" Tag="#FF333333"/>
+                                            <ComboBoxItem Content="{DynamicResource WindowTitleStyleBgYellow}" Tag="#FFFF00"/>
+                                            <ComboBoxItem Content="{DynamicResource WindowTitleStyleBgOrange}" Tag="#FFA500"/>
+                                            <ComboBoxItem Content="{DynamicResource WindowTitleStyleBgGreen}" Tag="#00FF00"/>
+                                            <ComboBoxItem Content="{DynamicResource WindowTitleStyleBgBlue}" Tag="#0000FF"/>
+                                        </ComboBox>
+                                        <StackPanel Orientation="Horizontal" Grid.Column="1" Margin="10,0,0,0">
+                                            <Label Content="{DynamicResource WindowTitleBgHex}" Style="{StaticResource ModernLabelStyle}" VerticalAlignment="Center"/>
+                                            <TextBox x:Name="CustomTitleBgColorInput" Style="{StaticResource ModernTextBoxStyle}" Width="100" MaxLength="6"/>
+                                        </StackPanel>
+                                        <Button Content="{DynamicResource WindowTitleStyleBgApply}" 
+                    Click="ApplyTitleBgColor_Click" 
+                    Width="100" 
+                    Style="{StaticResource ModernButtonStyle}" 
+                    Background="#E67E22"
+                    Grid.Column="2"/>
+                                    </Grid>
+                                </StackPanel>
+                            </StackPanel>
+                        </Border>
+                    </StackPanel>
+                </Expander>
+
+                <!-- SEGUNDO EXPANDER: Personalizar Ventana -->
+                <Expander x:Name="WindowExpander" Header="{DynamicResource WindowExpanderWindow}" Style="{StaticResource ModernExpanderStyle}" IsExpanded="False" Margin="5" Expanded="WindowExpander_Expanded">
+                    <StackPanel>
+                        <!-- Sección para cambiar color y opacidad del fence -->
+                        <StackPanel Orientation="Vertical" x:Name="FenceColorSettings" Margin="5" HorizontalAlignment="Stretch">
+                            <!-- Usamos un Grid para que se estire -->
+                            <Grid Margin="2">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+                                <Label Content="{DynamicResource WindowBgColor}" Style="{StaticResource ModernLabelStyle}" VerticalAlignment="Center"/>
+                                <ComboBox x:Name="ColorSelector" Style="{StaticResource ModernComboBoxStyle}" Grid.Column="1" MinWidth="120" MaxWidth="220">
+                                    <ComboBox.ItemContainerStyle>
+                                        <StaticResource ResourceKey="ModernComboBoxItemStyle"/>
+                                    </ComboBox.ItemContainerStyle>
+                                    <ComboBoxItem Content="{DynamicResource ColorDefault}" Tag="#545e75"/>
+                                    <ComboBoxItem Content="{DynamicResource ColorRed}" Tag="#FF0000"/>
+                                    <ComboBoxItem Content="{DynamicResource ColorGreen}" Tag="#00FF00"/>
+                                    <ComboBoxItem Content="{DynamicResource ColorBlue}" Tag="#0000FF"/>
+                                    <ComboBoxItem Content="{DynamicResource ColorYellow}" Tag="#FFFF00"/>
+                                    <ComboBoxItem Content="{DynamicResource ColorOrange}" Tag="#FFA500"/>
+                                    <ComboBoxItem Content="{DynamicResource ColorPink}" Tag="#FFC0CB"/>
+                                    <ComboBoxItem Content="{DynamicResource ColorPurple}" Tag="#800080"/>
+                                    <ComboBoxItem Content="{DynamicResource ColorBlack}" Tag="#000000"/>
+                                    <ComboBoxItem Content="{DynamicResource ColorWhite}" Tag="#FFFFFF"/>
+                                </ComboBox>
+                                
+                                <ComboBox x:Name="OpacitySelector" Style="{StaticResource ModernComboBoxStyle}" Grid.Column="2" Width="80" SelectedIndex="3">
+                                    <ComboBox.ItemContainerStyle>
+                                        <StaticResource ResourceKey="ModernComboBoxItemStyle"/>
+                                    </ComboBox.ItemContainerStyle>
+                                    <ComboBoxItem Content="{DynamicResource Opacity20}" Tag="33"/>
+                                    <ComboBoxItem Content="{DynamicResource Opacity50}" Tag="80"/>
+                                    <ComboBoxItem Content="{DynamicResource Opacity80}" Tag="CC"/>
+                                    <ComboBoxItem Content="{DynamicResource Opacity100}" Tag="FF"/>
+                                </ComboBox>
+                                <Button Content="{DynamicResource WindowBgButtonApply}" Click="ChangeFenceColor_Click" Width="80" Style="{StaticResource ModernButtonStyle}" Background="#E67E22" Grid.Column="3"/>
+                            </Grid>
+                            <Grid Margin="5">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+                                <Label Content="{DynamicResource CustomColorTitle}" Style="{StaticResource ModernLabelStyle}" VerticalAlignment="Center"/>
+                                <TextBox x:Name="CustomColorInput" Style="{StaticResource ModernTextBoxStyle}" Grid.Column="1" MaxLength="6" Margin="5"/>
+                              
+                            </Grid>
+                        </StackPanel>
+
+                        <!-- Selección de tamaño de íconos -->
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="10" x:Name="IconSizePanel">
+                            <Label Content="{DynamicResource IconSizeTitle}" Style="{StaticResource ModernLabelStyle}" VerticalAlignment="Center"/>
+                            <RadioButton Content="{DynamicResource IconSizeSmall}" Tag="16" Checked="IconSize_Changed" Style="{StaticResource ModernRadioButtonStyle}"/>
+                            <RadioButton Content="{DynamicResource IconSizeMedium}" Tag="32" Checked="IconSize_Changed" Style="{StaticResource ModernRadioButtonStyle}"/>
+                            <RadioButton Content="{DynamicResource IconSizeLarge}" Tag="48" Checked="IconSize_Changed" Style="{StaticResource ModernRadioButtonStyle}"/>
+                        </StackPanel>
+                    </StackPanel>
+                </Expander>
+
+                <!-- Sección para eliminar el fence - FUERA de los Expanders pero dentro del panel de opciones -->
+                <StackPanel Orientation="Horizontal" x:Name="FenceDeleteSettings" Margin="10,5" HorizontalAlignment="Center">
+                    <Button x:Name="DeleteFenceButton" Content="{DynamicResource WindowDeleteWindowButton}" Click="DeleteFence_Click" Width="180" Style="{StaticResource ModernButtonStyle}" Background="#E74C3C"/>
+                    <Label x:Name="DeleteWarningText" Content="{DynamicResource DeleteWarning}" 
+                           Style="{StaticResource ModernLabelStyle}" Foreground="Red" Visibility="Collapsed" Margin="5" VerticalAlignment="Center"/>
+                </StackPanel>
+            </StackPanel>
+        </StackPanel>
+    </Grid>
+</Page>

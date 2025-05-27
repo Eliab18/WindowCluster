@@ -1,0 +1,130 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:sys="clr-namespace:System;assembly=mscorlib">
+    <!-- Dictionary for Home -->
+    <sys:String x:Key="HomeButton">Home</sys:String>
+    <sys:String x:Key="HomeWelcome">Hi, {0}!</sys:String>
+    <sys:String x:Key="HomeDesc">Organize and manage your files easily and efficiently. Discover version 1.0.0 Beta and start customizing your experience.</sys:String>
+    <sys:String x:Key="HomeFeedVersion">Version 1.0.0 Beta</sys:String>
+    <sys:String x:Key="HomeNewsVersion1">Create and customize windows</sys:String>
+    <sys:String x:Key="HomeNewsVersion2">Smooth animations</sys:String>
+    <sys:String x:Key="HomeNewsVersion3">File organization and distribution</sys:String>
+    <sys:String x:Key="HomeStartButton">Start</sys:String>
+
+    <!-- Dictionary for Window -->
+    <sys:String x:Key="WindowButton">Window</sys:String>
+    <sys:String x:Key="WindowTitle">Window</sys:String>
+    <sys:String x:Key="WindowTittle">Windows</sys:String>
+    <sys:String x:Key="WindowCreateButton">Create</sys:String>
+    <sys:String x:Key="WindowExpanderTitle">Title</sys:String>
+    <sys:String x:Key="WindowDeleteWindowButton">Delete</sys:String>
+    <sys:String x:Key="WindowRenameButton">Rename</sys:String>
+    <sys:String x:Key="WindowColorTitle">Color:</sys:String>
+    <sys:String x:Key="WindowColorWhite">White</sys:String>
+    <sys:String x:Key="WindowColorBlack">Black</sys:String>
+    <sys:String x:Key="WindowColorRed">Red</sys:String>
+    <sys:String x:Key="WindowColorGreen">Green</sys:String>
+    <sys:String x:Key="WindowColorBlue">Blue</sys:String>
+    
+    <sys:String x:Key="WindowLabelHexBg">Hexadecimal Color:</sys:String>
+    
+    
+    <sys:String x:Key="WindowColorTitleButton">Apply</sys:String>
+
+    <sys:String x:Key="WindowFontFamily">Font</sys:String>
+    <sys:String x:Key="SearchFonts">Search fonts...</sys:String>
+    
+    <sys:String x:Key="WindowTitleAlignment">Alignment:</sys:String>
+    <sys:String x:Key="WindowTitleAlignmentLeft">Left</sys:String>
+    <sys:String x:Key="WindowTitleAlignmentCenter">Center</sys:String>
+    <sys:String x:Key="WindowTitleAlignmentRight">Right</sys:String>
+    <sys:String x:Key="WindowTitleSize">Size:</sys:String>
+    <sys:String x:Key="WindowTitleSizeSmall">Small</sys:String>
+    <sys:String x:Key="WindowTitleSizeMedium">Medium</sys:String>
+    <sys:String x:Key="WindowTitleSizeBig">Big</sys:String>
+    <sys:String x:Key="WindowTitleStyle">Style:</sys:String>
+    <sys:String x:Key="WindowTitleStyleDefault">Default</sys:String>
+    <sys:String x:Key="WindowTitleStyleTag">Tag</sys:String>
+       
+    <sys:String x:Key="WindowTitleStyleBackground">Color:</sys:String>
+    <sys:String x:Key="WindowTitleStyleBgDefault">Default</sys:String>
+    <sys:String x:Key="WindowTitleStyleBgYellow">Yellow</sys:String>
+    <sys:String x:Key="WindowTitleStyleBgOrange">Orange</sys:String>
+    <sys:String x:Key="WindowTitleStyleBgGreen">Green</sys:String>
+    <sys:String x:Key="WindowTitleStyleBgBlue">Blue</sys:String>
+    <sys:String x:Key="WindowTitleStyleBgApply">Apply</sys:String>
+    <sys:String x:Key="WindowTitleBgHex">Hexadecimal Color:</sys:String>
+    <sys:String x:Key="WindowTitleBgHexApply">Apply</sys:String>
+    
+    <!-- Expander Window-->
+    <sys:String x:Key="WindowExpanderWindow">Window</sys:String>
+    <sys:String x:Key="WindowBgColor">Color:</sys:String>
+    <sys:String x:Key="ApplyButton">Apply</sys:String>
+
+    <!-- Background colors -->
+    <sys:String x:Key="ColorDefault">Default</sys:String>
+    <sys:String x:Key="ColorRed">Red</sys:String>
+    <sys:String x:Key="ColorGreen">Green</sys:String>
+    <sys:String x:Key="ColorBlue">Blue</sys:String>
+    <sys:String x:Key="ColorYellow">Yellow</sys:String>
+    <sys:String x:Key="ColorOrange">Orange</sys:String>
+    <sys:String x:Key="ColorPink">Pink</sys:String>
+    <sys:String x:Key="ColorPurple">Purple</sys:String>
+    <sys:String x:Key="ColorBlack">Black</sys:String>
+    <sys:String x:Key="ColorWhite">White</sys:String>
+   
+    <!-- Opacity -->
+    <sys:String x:Key="OpacityTitle">Opacity:</sys:String>
+    <sys:String x:Key="Opacity20">20%</sys:String>
+    <sys:String x:Key="Opacity50">50%</sys:String>
+    <sys:String x:Key="Opacity80">80%</sys:String>
+    <sys:String x:Key="Opacity100">100%</sys:String>
+
+    <!-- Action buttons -->
+    <sys:String x:Key="WindowBgButtonApply">Apply</sys:String>
+
+    <!-- Custom colors -->
+    <sys:String x:Key="CustomColorTitle">Hexadecimal Color:</sys:String>
+    <sys:String x:Key="CustomColorApply">Apply</sys:String>
+    
+    <!-- Icon section -->
+    <sys:String x:Key="IconSizeTitle">Icon size:</sys:String>
+    <sys:String x:Key="IconSizeSmall">Small</sys:String>
+    <sys:String x:Key="IconSizeMedium">Medium</sys:String>
+    <sys:String x:Key="IconSizeLarge">Large</sys:String>
+
+    <!-- Warning messages window -->
+    <sys:String x:Key="DeleteWarning">Free your files first to delete.</sys:String>
+    <!-- Dictionary for FencesWindow -->
+    <sys:String x:Key="NewFence">New Window</sys:String>
+    <sys:String x:Key="FenceWindowMenuRoot">Open</sys:String>
+    <sys:String x:Key="FenceWindowMenuSort">Sort</sys:String>
+    <sys:String x:Key="FenceWindowMenuName">Name</sys:String>
+    <sys:String x:Key="FenceWindowMenuDate">Date</sys:String>
+    <sys:String x:Key="FenceWindowMenuType">Type</sys:String>
+    <sys:String x:Key="FenceWindowMenuDropFiles">Drop Files</sys:String>
+    
+    <!-- Dictionary for Settings -->
+    <sys:String x:Key="SettingsButton">Settings</sys:String>
+    <sys:String x:Key="SettingsTitle">Settings</sys:String>
+    <sys:String x:Key="StartWithWindows">Start automatically with Windows</sys:String>
+    <sys:String x:Key="MinimizeOnClose">Minimize to tray on close</sys:String>
+    <sys:String x:Key="LanguageTitle">Languages</sys:String>
+
+    <!-- Dictionary for About -->
+    <sys:String x:Key="AboutButton">About</sys:String>
+    <sys:String x:Key="AboutTitle">About</sys:String>
+    <sys:String x:Key="AboutDesc">Developed by Eliecol Technology©</sys:String>
+    <sys:String x:Key="AboutTitleVersion">Version</sys:String>
+    <sys:String x:Key="AboutCurrentVersion">1.0.0 Beta</sys:String>
+    <sys:String x:Key="AboutSearchActButton">Check for update</sys:String>
+
+    <sys:String x:Key="CheckingForUpdates">Checking for updates...</sys:String>
+    <sys:String x:Key="NoUpdatesAvailable">No updates available.</sys:String>
+    <sys:String x:Key="CheckForUpdates">Check for updates</sys:String>
+    <sys:String x:Key="AboutCloseButton">Close</sys:String>
+   
+
+
+
+</ResourceDictionary>

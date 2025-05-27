@@ -1,0 +1,50 @@
+#ignorar carpeta de config de visual studio 2022
+.vs/
+
+# Ignorar archivos temporales y de usuario de Visual Studio
+*.suo
+*.user
+*.aps
+*.ncb
+*.opendb
+*.openj
+*.pdb
+*.obj
+*.ilk
+*.ipch
+*.pgi
+*.pgd
+*.psess
+*.vsp
+*.vspx
+*.safetransfer
+*.testsettings
+*.trx
+*.webtest
+*.csdproj
+*.csproj.user
+*.deploy
+*.docstates
+*.resharper
+*.webinfo
+*.dnn
+*.njsproj
+*.njsproj.user
+
+# Resultados de compilación
+[Dd]ebug/
+[Rr]elease/
+bin/
+obj/
+*.dll
+*.exe
+
+# Archivos temporales
+*.~
+*.bak
+*.tmp
+*.log
+
+# Paquetes NuGet
+packages/
+*.nupkg

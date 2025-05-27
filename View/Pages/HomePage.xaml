@@ -1,0 +1,71 @@
+﻿<UserControl x:Class="FencesApp.Pages.HomePage"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:fa="http://schemas.fontawesome.io/icons/"
+             mc:Ignorable="d">
+    <Grid Background="#F0F0F0">
+        <StackPanel Margin="20" HorizontalAlignment="Center" VerticalAlignment="Center" Width="500">
+            <!-- Mensaje de Bienvenida, se actualizará en code‑behind -->
+            <TextBlock x:Name="WelcomeTextBlock" 
+                       Text="{DynamicResource HomeWelcome}" 
+                       FontSize="40" 
+                       FontWeight="Bold" 
+                       Foreground="#2C3E50"
+                       Margin="0,0,0,10"/>
+
+            <!-- Descripción de la aplicación -->
+            <TextBlock Text="{DynamicResource HomeDesc}"
+                       FontSize="15" 
+                       Foreground="#2C3E50"
+                       TextWrapping="Wrap"
+                       Margin="0,0,0,20"/>
+
+            <!-- Tablero de Novedades -->
+            <Border Background="#E0E0E0" CornerRadius="10" Padding="15" Margin="0,0,0,20">
+                <StackPanel>
+                    <!-- Ícono e información del primer elemento -->
+                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="0,0,0,5">
+                        <!-- Ícono de FontAwesome -->
+                        <fa:FontAwesome Icon="CheckCircle" Foreground="#1ABC9C" FontSize="20" Margin="0,5,10,0"/>
+                        <!-- Texto de la novedad -->
+                        <TextBlock Text="{DynamicResource HomeNewsVersion1}" 
+                       FontSize="20" 
+                       Foreground="Black"/>
+                    </StackPanel>
+
+                    <!-- Ícono e información del segundo elemento -->
+                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="0,0,0,5">
+                        <fa:FontAwesome Icon="CheckCircle" Foreground="#1ABC9C" FontSize="20" Margin="0,5,10,0"/>
+                        <TextBlock Text="{DynamicResource HomeNewsVersion2}" 
+                       FontSize="20" 
+                       Foreground="Black"/>
+                    </StackPanel>
+
+                    <!-- Ícono e información del tercer elemento -->
+                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="0,0,0,5">
+                        <fa:FontAwesome Icon="CheckCircle" Foreground="#1ABC9C" FontSize="20" Margin="0,5,10,0"/>
+                        <TextBlock Text="{DynamicResource HomeNewsVersion3}" 
+                       FontSize="20" 
+                       Foreground="Black"/>
+                    </StackPanel>
+                </StackPanel>
+            </Border>
+
+
+            <!-- Botón para iniciar y navegar a FencesPage -->
+            <Button x:Name="FencesButton" 
+                    Content="{DynamicResource HomeStartButton}" 
+                    Width="100" 
+                    Height="40"
+                    Background="#1ABC9C" 
+                    Foreground="White" 
+                    FontSize="16" 
+                    FontWeight="Bold"
+                    BorderThickness="0" 
+                    Cursor="Hand" 
+                    Click="FencesButton_Click"/>
+        </StackPanel>
+    </Grid>
+</UserControl>
