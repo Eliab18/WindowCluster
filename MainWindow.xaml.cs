@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.IO;
 using System.Windows;
 using System.Windows.Controls;
@@ -20,13 +21,18 @@ namespace FencesApp
         {
             try
             {
+                Stopwatch stopwatch = new Stopwatch();
+                stopwatch.Start();
                 InitializeComponent();
+                stopwatch.Stop();
+                LogStartup($"[PERF] InitializeComponent took {stopwatch.ElapsedMilliseconds} ms");
 
                 // Agregar log para debugging del inicio automático
                 LogStartup("MainWindow constructor iniciado");
 
                 // IMPORTANTE: Cargar configuración al inicio
-                LoadConfig();
+                // LoadConfig(); // Removed as per optimization task
+                // LogStartup($"[PERF] LoadConfig (MainWindow) call removed from constructor"); // Optional: Log removal
 
                 Loaded += (s, e) =>
                 {
@@ -152,8 +158,12 @@ namespace FencesApp
                 }
 
                 // Navegar a la HomePage al iniciar
+                Stopwatch stopwatchPageNav = new Stopwatch();
+                stopwatchPageNav.Start();
                 HomePage homePage = new HomePage();
                 MainFrame.Content = homePage;
+                stopwatchPageNav.Stop();
+                LogStartup($"[PERF] HomePage creation and navigation took {stopwatchPageNav.ElapsedMilliseconds} ms");
 
                 // Recorrer los botones del menú y asignar el fondo activo al que tenga Tag "Home"
                 if (MenuPanel != null)
@@ -290,6 +300,9 @@ namespace FencesApp
         public string Language { get; set; } = "en";
 
         public bool MinimizeOnClose { get; set; } = false;
+
+        public bool StartWithWindows { get; set; } = true;
+
 
     }
 }

@@ -99,8 +99,8 @@
                             Grid.Column="2"/>
                                 </Grid>
                             </StackPanel>
-                            
-                            
+
+
                         </Border>
 
                         <!-- Font family style-->
@@ -284,7 +284,7 @@
                                     <ComboBoxItem Content="{DynamicResource ColorBlack}" Tag="#000000"/>
                                     <ComboBoxItem Content="{DynamicResource ColorWhite}" Tag="#FFFFFF"/>
                                 </ComboBox>
-                                
+
                                 <ComboBox x:Name="OpacitySelector" Style="{StaticResource ModernComboBoxStyle}" Grid.Column="2" Width="80" SelectedIndex="3">
                                     <ComboBox.ItemContainerStyle>
                                         <StaticResource ResourceKey="ModernComboBoxItemStyle"/>
@@ -304,7 +304,7 @@
                                 </Grid.ColumnDefinitions>
                                 <Label Content="{DynamicResource CustomColorTitle}" Style="{StaticResource ModernLabelStyle}" VerticalAlignment="Center"/>
                                 <TextBox x:Name="CustomColorInput" Style="{StaticResource ModernTextBoxStyle}" Grid.Column="1" MaxLength="6" Margin="5"/>
-                              
+
                             </Grid>
                         </StackPanel>
 

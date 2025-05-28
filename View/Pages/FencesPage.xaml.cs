@@ -448,7 +448,7 @@ namespace FencesApp.Pages
             // Set the initial ItemsSource
             FontFamilySelector.ItemsSource = allFontItems;
 
-           
+
         }
 
 
@@ -890,7 +890,7 @@ namespace FencesApp.Pages
             if (FenceSelector.SelectedItem == null) return;
 
             string selectedFenceName = FenceSelector.SelectedItem.ToString();
- 
+
             var selectedFence = FenceManager.Fences.FirstOrDefault(f => f.Title == selectedFenceName);
 
 
@@ -919,7 +919,7 @@ namespace FencesApp.Pages
                     int currentIndex = FenceSelector.SelectedIndex;
 
                     // Eliminar fence de la lista y del ComboBox
-          
+
                     FenceManager.Fences.Remove(selectedFence);
 
                     FenceSelector.Items.Remove(selectedFenceName);

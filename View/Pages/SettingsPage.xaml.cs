@@ -42,9 +42,16 @@ namespace FencesApp.Pages
 
             _config = ((App)Application.Current).Config;
 
+            // Load the StartWithWindows setting from AppConfig
+            if (StartWithWindowsCheckBox != null) // Ensure CheckBox is available
+            {
+                StartWithWindowsCheckBox.IsChecked = _config.StartWithWindows;
+            }
+            // The SetStartup method will be called by the CheckBox event handlers 
+            // to synchronize the registry with the config if needed, or on initial load 
+            // if we want to ensure registry reflects config. For now, just load from config.
 
-
-            LoadStartWithWindowsSetting();
+            // LoadStartWithWindowsSetting(); // This line will be replaced by loading from _config
 
             // Inicializar el estado de minimizar al cerrar
 
@@ -111,9 +118,12 @@ namespace FencesApp.Pages
         private void StartWithWindowsCheckBox_Checked(object sender, RoutedEventArgs e)
 
         {
-
-            SetStartup(true);
-
+            if (_config != null)
+            {
+                _config.StartWithWindows = true;
+                ((App)Application.Current).SaveConfig(_config);
+            }
+            SetStartup(true); // Keep existing logic to update registry
         }
 
 
@@ -121,9 +131,12 @@ namespace FencesApp.Pages
         private void StartWithWindowsCheckBox_Unchecked(object sender, RoutedEventArgs e)
 
         {
-
-            SetStartup(false);
-
+            if (_config != null)
+            {
+                _config.StartWithWindows = false;
+                ((App)Application.Current).SaveConfig(_config);
+            }
+            SetStartup(false); // Keep existing logic to update registry
         }
 
 
